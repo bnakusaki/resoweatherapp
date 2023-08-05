@@ -20,3 +20,4 @@ samples, guidance on mobile development, and a full API reference.
 1. This app will have a daily weather report feature with one use case. ie. Get daily weather.
 
 other features will be added later.
+# resoweatherapp
