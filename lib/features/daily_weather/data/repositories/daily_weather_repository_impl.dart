@@ -22,10 +22,10 @@ class DailyWeatherRepositoryImpl implements DailyWeatherRepository {
         final weather = await remoteDataSource.getDailyWeather();
         return Right(weather);
       } on ServerException {
-        return Left(ServerFailure());
+        return const Left(ServerFailure('Oops, something is wrong'));
       }
     } else {
-      return Left(ServerFailure());
+      return const Left(ServerFailure('Oops, something is wrong'));
     }
   }
 }

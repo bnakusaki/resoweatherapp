@@ -89,7 +89,7 @@ void main() {
       //assert
       verify(() => mockNetworkInfo.isConnected);
       // verify(() => mockRemoteSource.getDailyWeather());
-      expect(result, Left(ServerFailure()));
+      expect(result, Left(ServerFailure('Oops, something is wrong')));
     });
   });
 }
