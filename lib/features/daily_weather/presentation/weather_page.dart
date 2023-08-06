@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:resoweatherapp/features/daily_weather/domain/entities/daily_weather.dart';
 import 'package:resoweatherapp/features/daily_weather/presentation/bloc/weather_bloc.dart';
 import 'package:resoweatherapp/injection_container.dart';
 
@@ -11,31 +13,29 @@ class DummyWeatherScreen extends StatefulWidget {
 }
 
 class _DummyWeatherScreenState extends State<DummyWeatherScreen> {
-  // dynamic weather;
-
-  // weatherFetch() async {
-  // NetworkInfoImpl info = NetworkInfoImpl();
-  // http.Client client = http.Client();
-  // DailyWeatherRepositoryImpl repository = DailyWeatherRepositoryImpl(
-  // remoteDataSource: DailyWeatherRemoteDataSourceImpl(client: client),
-  // networkInfo: info,
-  // );
-  // final response = await GetDailyWeather(repository).call();
-  // if (response is Right<Failure, DailyWeather>) {
-  // setState(() {
-  // weather = response;
-  // });
-  // }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final bloc = sl<WeatherBLoc>();
 
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Text('${bloc.getDailyWeather()}'),
+        body: FutureBuilder(
+          future: bloc.getDailyWeather(),
+          builder: (context, snapshot) {
+            return Center(
+              child: snapshot.connectionState == ConnectionState.waiting
+                  ? const CupertinoActivityIndicator()
+                  : (snapshot.data is Right<String, DailyWeather>)
+                      ? Text('${(snapshot.data as Right<String, DailyWeather>).value}')
+                      : Text((snapshot.data as Left<String, DailyWeather>).value),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await bloc.dailyWeather();
+          },
+          child: const Icon(Icons.refresh),
         ),
       ),
     );

@@ -7,12 +7,14 @@ import 'package:resoweatherapp/features/daily_weather/data/data_sources/daily_we
 import 'package:resoweatherapp/features/daily_weather/data/repositories/daily_weather_repository_impl.dart';
 import 'package:resoweatherapp/features/daily_weather/domain/repositories/daily_weather_repository.dart';
 import 'package:resoweatherapp/features/daily_weather/domain/use_cases/get_daily_weather.dart';
+import 'package:resoweatherapp/features/daily_weather/presentation/bloc/weather_bloc.dart';
 
 final sl = GetIt.instance;
 
 void init() {
   // ! Features - Daily Weather
   sl.registerFactory(() => GetDailyWeather(sl()));
+  sl.registerFactory(() => WeatherBLoc(dailyWeather: sl()));
 
   // ! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
